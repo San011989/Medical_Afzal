@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: medical-tailoring-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /docs
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: STORAGE_DIR
+        value: /app/storage
+    disk:
+      name: medical-tailoring-data
+      mountPath: /app/storage
+      sizeGB: 1
+
+  - type: web
+    name: medical-tailoring-ui
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: streamlit run app.py --server.address 0.0.0.0 --server.port $PORT --server.headless true
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: medical-tailoring-api
+          property: host

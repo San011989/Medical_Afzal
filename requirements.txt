@@ -1,0 +1,14 @@
+fastapi
+streamlit
+uvicorn[standard]
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt==4.0.1
+python-multipart
+chromadb
+sentence-transformers
+pytesseract
+PyMuPDF
+openai
+langchain-openai
+pydantic

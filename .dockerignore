@@ -1,0 +1,12 @@
+.env
+.env.*
+.venv/
+venv/
+__pycache__/
+.git/
+.gitignore
+chroma_db/
+uploads/
+storage/
+.vscode/
+*.pyc
