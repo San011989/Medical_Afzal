@@ -261,6 +261,10 @@ def normalized_metadata(record: dict) -> dict:
 # ------------------------------------------------------------------------------
 app = FastAPI(title="Medical Custom Tailoring RAG Backend", version="1.0.0")
 
+@app.get("/")
+async def health_check():
+    return {"status": "ok", "service": "medical-tailoring-api"}
+
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user_dict = FAKE_USERS_DB.get(form_data.username)
