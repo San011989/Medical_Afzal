@@ -63,9 +63,11 @@ Create a `.env` file in the project root:
 ```env
 OPENAI_API_KEY=your_openai_api_key
 JWT_SECRET_KEY=replace_with_a_long_random_secret
+AUTH_USERNAME=your_private_username
+AUTH_PASSWORD=your_private_password
 ```
 
-`OPENAI_API_KEY` is required. `JWT_SECRET_KEY` is optional, but should be set in non-development environments.
+`OPENAI_API_KEY`, `AUTH_USERNAME`, and `AUTH_PASSWORD` are required. `JWT_SECRET_KEY` is optional, but should be set in non-development environments.
 
 ## Run the Application
 
@@ -95,14 +97,7 @@ http://127.0.0.1:8000/docs
 
 ## Login
 
-Default development account:
-
-```text
-Username: admin@medical.com
-Password: admin123
-```
-
-Change the authentication implementation before deploying this application publicly.
+Use the private `AUTH_USERNAME` and `AUTH_PASSWORD` values configured in the deployment environment. They are intentionally not included in this repository.
 
 ## API Endpoints
 

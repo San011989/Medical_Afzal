@@ -33,6 +33,8 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "fallback-secret-key-change-me")
+AUTH_USERNAME = os.getenv("AUTH_USERNAME")
+AUTH_PASSWORD = os.getenv("AUTH_PASSWORD")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 480
 STORAGE_DIR = Path(os.getenv("STORAGE_DIR", "."))
@@ -43,6 +45,8 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY not found in .env file. Please check your configuration.")
+if not AUTH_USERNAME or not AUTH_PASSWORD:
+    raise ValueError("AUTH_USERNAME and AUTH_PASSWORD must be set in the environment.")
 
 # Initialize OpenAI Client using the key from .env
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -80,10 +84,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 FAKE_USERS_DB = {
-    "admin@medical.com": {
-        "username": "admin@medical.com",
+    AUTH_USERNAME: {
+        "username": AUTH_USERNAME,
         "full_name": "Dr. Tailor Admin",
-        "hashed_password": pwd_context.hash("admin123"),
+        "hashed_password": pwd_context.hash(AUTH_PASSWORD),
         "role": "admin"
     }
 }

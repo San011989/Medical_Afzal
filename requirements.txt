@@ -12,3 +12,4 @@ PyMuPDF
 openai
 langchain-openai
 pydantic
+python-dotenv

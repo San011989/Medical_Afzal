@@ -1,6 +1,10 @@
 import io
+import os
 import requests
+from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFont
+
+load_dotenv()
 
 # ------------------------------------------------------------------------------
 # CONFIGURATION
@@ -9,8 +13,8 @@ BASE_URL = "http://127.0.0.1:8000"
 LOGIN_URL = f"{BASE_URL}/token"
 UPLOAD_URL = f"{BASE_URL}/api/v1/measurements/upload"
 
-USERNAME = "admin@medical.com"
-PASSWORD = "admin123"
+USERNAME = os.getenv("AUTH_USERNAME")
+PASSWORD = os.getenv("AUTH_PASSWORD")
 
 # ------------------------------------------------------------------------------
 # HELPER: CREATE A SAMPLE IMAGE IN MEMORY

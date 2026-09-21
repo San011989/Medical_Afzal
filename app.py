@@ -63,7 +63,7 @@ if not st.session_state.access_token:
     st.markdown('<div class="hero"><h1>Medical Measurement Portal</h1><p>Sign in to access patient records, diagrams, search, and analytics.</p></div>', unsafe_allow_html=True)
     st.subheader("Sign in")
     with st.form("login_form"):
-        username = st.text_input("Username", value="admin@medical.com")
+        username = st.text_input("Username")
         password = st.text_input("Password", type="password")
         login_submitted = st.form_submit_button("Sign in")
     if login_submitted:
