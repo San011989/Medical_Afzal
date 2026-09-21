@@ -16,10 +16,6 @@ services:
         sync: false
       - key: STORAGE_DIR
         value: /app/storage
-    disk:
-      name: medical-tailoring-data
-      mountPath: /app/storage
-      sizeGB: 1
 
   - type: web
     name: medical-tailoring-ui
