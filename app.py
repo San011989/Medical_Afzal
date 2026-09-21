@@ -76,8 +76,13 @@ if not st.session_state.access_token:
             response.raise_for_status()
             st.session_state.access_token = response.json()["access_token"]
             st.rerun()
+        except requests.HTTPError as error:
+            if error.response is not None and error.response.status_code == 401:
+                st.error("Invalid username or password.")
+            else:
+                st.error(f"Authentication service error: {error}")
         except requests.RequestException:
-            st.error("Invalid username or password.")
+            st.error("Authentication service is unavailable. Start the FastAPI backend and try again.")
     st.stop()
 
 
