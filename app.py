@@ -2,6 +2,7 @@ import csv
 import io
 import json
 import os
+import time
 
 # app.py
 import streamlit as st
@@ -67,22 +68,33 @@ if not st.session_state.access_token:
         password = st.text_input("Password", type="password")
         login_submitted = st.form_submit_button("Sign in")
     if login_submitted:
-        try:
-            response = requests.post(
-                f"{BASE_URL}/token",
-                data={"username": username, "password": password},
-                timeout=30,
-            )
-            response.raise_for_status()
+        response = None
+        request_error = None
+        for attempt in range(3):
+            try:
+                response = requests.post(
+                    f"{BASE_URL}/token",
+                    data={"username": username, "password": password},
+                    timeout=90,
+                )
+                if response.status_code not in (502, 503, 504):
+                    break
+                time.sleep(5)
+            except requests.RequestException as error:
+                request_error = error
+                time.sleep(5)
+
+        if response is not None and response.status_code == 200:
             st.session_state.access_token = response.json()["access_token"]
             st.rerun()
-        except requests.HTTPError as error:
-            if error.response is not None and error.response.status_code == 401:
-                st.error("Invalid username or password.")
-            else:
-                st.error(f"Authentication service error: {error}")
-        except requests.RequestException:
-            st.error("Authentication service is unavailable. Start the FastAPI backend and try again.")
+        elif response is not None and response.status_code == 401:
+            st.error("Invalid username or password.")
+        elif response is not None and response.status_code in (502, 503, 504):
+            st.error("The Render API is waking up or unavailable. Please wait a minute and try again.")
+        elif request_error:
+            st.error(f"Authentication service is unavailable: {request_error}")
+        else:
+            st.error(f"Authentication failed with status {response.status_code}.")
     st.stop()
 
 
